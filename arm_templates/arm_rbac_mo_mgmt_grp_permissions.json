@@ -13,10 +13,17 @@
       "metadata": {
         "description": "Object ID of the service principal that will be given Reader access at the defined management group scope"
       }
+    },
+    "ownerPrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "Object ID of the service principal that will be given Owner access at the defined management group scope"
+      }
     }
   },
   "variables": {
-    "roleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+    "readerRoleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7",
+    "ownerRoleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/8e3af657-a8ff-443c-a75c-2fe8c4bcb635"
   },
   "resources": [
     {
@@ -27,6 +34,17 @@
       "properties": {
         "roleDefinitionId": "[variables('roleDefinitionId')]",
         "principalId": "[parameters('readerPrincipalId')]",
+        "principalType": "ServicePrincipal"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(parameters('managementGroupId'), parameters('ownerPrincipalId'), variables('ownerRoleDefinitionId'))]",
+      "scope": "[format('/providers/Microsoft.Management/managementGroups/{0}', parameters('managementGroupId'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('ownerRoleDefinitionId')]",
+        "principalId": "[parameters('ownerPrincipalId')]",
         "principalType": "ServicePrincipal"
       }
     }
