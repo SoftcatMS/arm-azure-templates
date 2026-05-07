@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "managementGroupId": {
+            "type": "string",
+            "metadata": {
+                "description": "ID of the management group to assign the role to. If the tenant root group, this will typically be the tenant ID"
+            }
+
+        },
+        "readerPrincipalId": {
+            "type": "string",
+            "metadata": {
+                "description": "Object ID of the service principal that will be given Reader access at the defined management group scope"
+            }
+
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2022-09-01",
+            "name": "Softcat-Cloud-Fundamentals-Mgmt-Grp-Permissions",
+            "location": "uksouth",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/SoftcatMS/arm-azure-templates/refs/heads/SSPENG-702/arm_templates/arm_rbac_cf_mgmt_grp_permissions.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "managementGroupId": {
+                        "value": "[parameters('managementGroupId')]"
+                    },
+                    "readerPrincipalId": {
+                        "value": "[parameters('readerPrincipalId')]"
+                    }
+                }
+			}
+		}	
+    ]
+}
