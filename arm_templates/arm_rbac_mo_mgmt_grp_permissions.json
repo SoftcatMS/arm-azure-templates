@@ -32,7 +32,7 @@
       "name": "[guid(parameters('managementGroupId'), parameters('readerPrincipalId'), variables('roleDefinitionId'))]",
       "scope": "[format('/providers/Microsoft.Management/managementGroups/{0}', parameters('managementGroupId'))]",
       "properties": {
-        "roleDefinitionId": "[variables('roleDefinitionId')]",
+        "roleDefinitionId": "[variables('readerRoleDefinitionId')]",
         "principalId": "[parameters('readerPrincipalId')]",
         "principalType": "ServicePrincipal"
       }
